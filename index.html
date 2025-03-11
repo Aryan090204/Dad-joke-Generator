@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dad Jokes Generator</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        #joke {
+            font-size: 20px;
+            color: #333;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            width: 60%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        #joke:hover {
+            transform: scale(1.05);
+        }
+        button {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😂 Dad Jokes Generator</h1>
+        <div id="joke">Click the button to get a joke!</div>
+        <button id="jokeBtn">Tell Me A Joke</button>
+        <button id="toggleDarkMode">🌙 Toggle Dark Mode</button>
+        <button id="shareBtn">📤 Share</button>
+        <p id="error" class="hidden">Oops! Couldn't fetch a joke. Try again. 😅</p>
+    </div>
+
+    <script>
+        document.getElementById("jokeBtn").addEventListener("click", fetchJoke);
+        document.getElementById("toggleDarkMode").addEventListener("click", toggleDarkMode);
+        document.getElementById("shareBtn").addEventListener("click", shareJoke);
+        
+        async function fetchJoke() {
+            try {
+                document.getElementById("joke").textContent = "Loading... 😂";
+                let response = await fetch('https://api.api-ninjas.com/v1/dadjokes', {
+                    headers: { 'X-Api-Key': 'Jbomw5gZOrK8m8im9Y9XiQ==4Xj8KSYUJRukHtWi' }
+                });
+                let data = await response.json();
+                document.getElementById("joke").textContent = data[0].joke;
+            } catch (error) {
+                document.getElementById("error").classList.remove("hidden");
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function shareJoke() {
+            let jokeText = document.getElementById("joke").textContent;
+            let shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(jokeText)}`;
+            window.open(shareUrl, "_blank");
+        }
+    </script>
+</body>
+</html>
